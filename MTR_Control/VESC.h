@@ -9,7 +9,7 @@ void VESC_getValues(void *param);
 void VESC_control(void *param);
 void VESC_setCurrent(float current);
 void VESC_setBrakeCurrent(float current);
-void VESC_setHandBrake(float current);
+void VESC_setHandBrakeCurrent(float current);
 
 struct dataPackageVESC {
     float avgMotorCurrent;

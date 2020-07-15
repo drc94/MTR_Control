@@ -66,12 +66,16 @@ void VESC_printValues(void *param){
   vTaskDelay(200/portTICK_PERIOD_MS); //200ms
 }
 
-void VESC_SetCurrent(float current){
+void VESC_setCurrent(float current){
   UART.setCurrent(current);
 }
 
-void VESC_SetBrakeCurrent(float current){
+void VESC_setBrakeCurrent(float current){
   UART.setBrakeCurrent(current);
+}
+
+void VESC_setHandBrakeCurrent(float current){
+  UART.setHandBrakeCurrent(current);
 }
 
 void VESC_control(void *param){
