@@ -19,38 +19,51 @@ void VESC_Init(){
   UART.setSerialPort(&vescSerial);
 }
 
-void VESC_GetValues(void *param){
-  UART.data.rpm;
-}
-
-
-void VESC_PrintValues(void *param){
+void VESC_getValues(void *param){
 /** Call the function getVescValues() to acquire data from VESC */
   if ( UART.getVescValues() ) {
-    //Serial.print(toggle);
-    //Serial.print(", ");
-    Serial.print(UART.data.rpm);
-    Serial.print(", ");
-    Serial.print(UART.data.avgInputCurrent);
-    Serial.print(", ");
-    Serial.print(UART.data.avgMotorCurrent);
-    Serial.print(", ");
-    Serial.print(UART.data.dutyCycleNow);
-    Serial.print(", ");
-    Serial.print(UART.data.tachometer);
-    Serial.print(", ");
-    Serial.print(UART.data.inpVoltage);
-    Serial.print(", ");
-    Serial.print(UART.data.ampHours);
-    Serial.print(", ");
-    Serial.println(UART.data.ampHoursCharged);
-    //Serial.print(", ");
-    //Serial.println(UART.data.tachometerAbs);
+    VESC_Values.avgMotorCurrent = UART.data.avgMotorCurrent;
+    VESC_Values.avgInputCurrent = UART.data.avgInputCurrent;
+    VESC_Values.dutyCycleNow = UART.data.dutyCycleNow;
+    VESC_Values.rpm = UART.data.rpm;
+    VESC_Values.inpVoltage = UART.data.inpVoltage;
+    VESC_Values.ampHours = UART.data.ampHours;
+    VESC_Values.ampHoursCharged = UART.data.ampHoursCharged;
+    VESC_Values.wattHours = UART.data.wattHours;
+    VESC_Values.wattHoursCharged = UART.data.wattHoursCharged;
+    VESC_Values.tachometer = UART.data.tachometer;
+    VESC_Values.tachometerAbs = UART.data.tachometerAbs;
+    VESC_Values.tempMosfet = UART.data.tempMosfet;
+    VESC_Values.error = UART.data.error;
+    VESC_Values.pidPos = UART.data.pidPos;
+    VESC_Values.id = UART.data.id;
   }
   else
   {
     Serial.println("Failed to get data!");
   }
+  vTaskDelay(200/portTICK_PERIOD_MS); //200ms
+}
+
+void VESC_printValues(void *param){
+  Serial.print(VESC_Values.rpm);
+  Serial.print(", ");
+  Serial.print(VESC_Values.avgInputCurrent);
+  Serial.print(", ");
+  Serial.print(VESC_Values.avgMotorCurrent);
+  Serial.print(", ");
+  Serial.print(VESC_Values.dutyCycleNow);
+  Serial.print(", ");
+  Serial.print(VESC_Values.tachometer);
+  Serial.print(", ");
+  Serial.print(VESC_Values.inpVoltage);
+  Serial.print(", ");
+  Serial.print(VESC_Values.ampHours);
+  Serial.print(", ");
+  Serial.println(VESC_Values.ampHoursCharged);
+  //Serial.print(", ");
+  //Serial.println(VESC_Values.tachometerAbs);
+  vTaskDelay(200/portTICK_PERIOD_MS); //200ms
 }
 
 void VESC_SetCurrent(float current){
@@ -59,4 +72,8 @@ void VESC_SetCurrent(float current){
 
 void VESC_SetBrakeCurrent(float current){
   UART.setBrakeCurrent(current);
+}
+
+void VESC_control(void *param){
+  vTaskDelay(200/portTICK_PERIOD_MS); //200ms
 }
