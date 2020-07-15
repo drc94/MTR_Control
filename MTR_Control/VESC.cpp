@@ -7,9 +7,7 @@ VescUart UART;
 /** Create software serial port using 2 digital extra outputs */
 SoftwareSerial vescSerial(2, 3); // Rx, Tx
 
-struct VESC_Values{
-  int
-}
+dataPackageVESC VESC_Values;
 
 void VESC_Init(){
     /** Setup vescSerial port **/
@@ -22,7 +20,7 @@ void VESC_Init(){
 }
 
 void VESC_GetValues(void *param){
-  UART.data.rpm
+  UART.data.rpm;
 }
 
 
@@ -56,9 +54,9 @@ void VESC_PrintValues(void *param){
 }
 
 void VESC_SetCurrent(float current){
-  UART.setCurrent(param);
+  UART.setCurrent(current);
 }
 
 void VESC_SetBrakeCurrent(float current){
-  UART.setBrakeCurrent(param);
+  UART.setBrakeCurrent(current);
 }
