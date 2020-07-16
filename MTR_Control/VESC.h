@@ -1,17 +1,8 @@
-/** Todo lo relacionado con el VESC **/
+#include <Arduino_FreeRTOS.h>
 #include <VescUart.h>
 #include <SoftwareSerial.h>
-#include <Arduino_FreeRTOS.h>
 
-void VESC_Init();
-void VESC_printValues(void *param);
-void VESC_getValues(void *param);
-void VESC_control(void *param);
-void VESC_setCurrent(float current);
-void VESC_setBrakeCurrent(float current);
-void VESC_setHandBrake(float current);
-
-struct dataPackageVESC {
+typedef struct {
     float avgMotorCurrent;
     float avgInputCurrent;
     float dutyCycleNow;
@@ -28,4 +19,8 @@ struct dataPackageVESC {
     uint8_t error; 
     float pidPos;
     uint8_t id; 
-};
+} dataPackageVESC_t ;
+
+void VESCInit(dataPackageVESC_t *ptrVESC_Values);
+
+void VESCgetValues(dataPackageVESC_t *ptrVESC_Values);
