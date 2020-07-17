@@ -1,22 +1,43 @@
+<<<<<<< HEAD
+#include "Display.h"
+=======
 #include "VESC.h"
-
-TaskHandle_t Task_Handle_printValues;
-TaskHandle_t Task_Handle_getValues;
-TaskHandle_t Task_Handle_control;
+>>>>>>> origin/hand_brake_function
 
 void setup() {
+  displayInit();
 
-  /** Setup Serial port to display data */
-  Serial.begin(9600);
+  VESCInit(&VESC_Values);
 
-  VESC_Init();
+<<<<<<< HEAD
+// Now set tasks to run independently.
+  xTaskCreate(
+    &TaskPrint
+    ,  "Print"   // A name just for humans
+    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  NULL
+    ,  1  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    ,  NULL );
 
-  xTaskCreate(VESC_printValues, "Task_printValues", 100, NULL, 1, &Task_Handle_printValues);
-  xTaskCreate(VESC_getValues, "Task_getValues", 100, NULL, 2, &Task_Handle_getValues);
-  xTaskCreate(VESC_control, "Task_control", 100, NULL, 2, &Task_Handle_control);
+  xTaskCreate(
+    &TaskGetValues
+    ,  "GetValues"   // A name just for humans
+    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  NULL
+    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    ,  NULL );
+
+  // Now the task scheduler, which takes over control of scheduling individual tasks, is automatically started.
+//vTaskStartScheduler();
+=======
+>>>>>>> origin/hand_brake_function
 }
 
-void loop() {
-  //Don't put code right here (we're working with RTOS)
+void loop()
+{
+  // Empty. Things are done in Tasks.
 }
- 
+
+/*--------------------------------------------------*/
+/*---------------------- Tasks ---------------------*/
+/*--------------------------------------------------*/
