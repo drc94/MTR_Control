@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <Arduino_FreeRTOS.h>
 #include <VescUart.h>
 #include <SoftwareSerial.h>
@@ -27,9 +26,8 @@ static dataPackageVESC_t VESC_Values;
 void VESCInit(dataPackageVESC_t *ptrVESC_Values);
 
 void TaskGetValues(void *pvParameters);
-=======
+
 void VESC_control(void);
 void VESC_setCurrent(float current);
 void VESC_setBrakeCurrent(float current);
 void VESC_setHandBrakeCurrent(float current);
->>>>>>> origin/hand_brake_function
