@@ -21,6 +21,8 @@ typedef struct {
     uint8_t id; 
 } dataPackageVESC_t ;
 
+static dataPackageVESC_t VESC_Values;
+
 void VESCInit(dataPackageVESC_t *ptrVESC_Values);
 
-void VESCgetValues(dataPackageVESC_t *ptrVESC_Values);
+void TaskGetValues(void *pvParameters);

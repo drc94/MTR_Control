@@ -1,7 +1,5 @@
 #include "Display.h"
 
-dataPackageVESC_t VESC_Values;
-
 void setup() {
   displayInit();
 
@@ -12,7 +10,15 @@ void setup() {
     &TaskPrint
     ,  "Print"   // A name just for humans
     ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
-    ,  &VESC_Values
+    ,  NULL
+    ,  1  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    ,  NULL );
+
+  xTaskCreate(
+    &TaskGetValues
+    ,  "GetValues"   // A name just for humans
+    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  NULL
     ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
     ,  NULL );
 
