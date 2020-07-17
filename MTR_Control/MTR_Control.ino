@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 #include "Display.h"
+=======
+#include "VESC.h"
+>>>>>>> origin/hand_brake_function
 
 void setup() {
   displayInit();
 
   VESCInit(&VESC_Values);
 
+<<<<<<< HEAD
 // Now set tasks to run independently.
   xTaskCreate(
     &TaskPrint
@@ -24,6 +29,8 @@ void setup() {
 
   // Now the task scheduler, which takes over control of scheduling individual tasks, is automatically started.
 //vTaskStartScheduler();
+=======
+>>>>>>> origin/hand_brake_function
 }
 
 void loop()

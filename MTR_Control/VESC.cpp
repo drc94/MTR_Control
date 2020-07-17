@@ -1,5 +1,6 @@
 #include "VESC.h"
 
+<<<<<<< HEAD
 /** Initiate VescUart class */
 VescUart UART;
 
@@ -58,4 +59,20 @@ void TaskGetValues(void *pvParameters){
       Serial.println("Failed to get data!");
     }
   }
+=======
+void VESC_setCurrent(float current){
+  UART.setCurrent(current);
+}
+
+void VESC_setBrakeCurrent(float current){
+  UART.setBrakeCurrent(current);
+}
+
+void VESC_setHandBrakeCurrent(float current){
+  UART.setHandBrakeCurrent(current);
+}
+
+void VESC_control(){
+  vTaskDelay(200/portTICK_PERIOD_MS); //200ms
+>>>>>>> origin/hand_brake_function
 }
