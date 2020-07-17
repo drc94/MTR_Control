@@ -1,4 +1,3 @@
-#include <Arduino_FreeRTOS.h>
 #include <VescUart.h>
 #include <SoftwareSerial.h>
 
@@ -25,7 +24,7 @@ static dataPackageVESC_t VESC_Values;
 
 void VESCInit(dataPackageVESC_t *ptrVESC_Values);
 
-void TaskGetValues(void *pvParameters);
+void TaskGetValues(dataPackageVESC_t *ptrVESC_Values);
 
 void VESC_control(void);
 void VESC_setCurrent(float current);

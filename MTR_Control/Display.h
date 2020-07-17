@@ -3,4 +3,4 @@
 
 void displayInit();
 
-void TaskPrint(void *pvParameters);
+void TaskPrint(dataPackageVESC_t *ptrVESC_Values);
