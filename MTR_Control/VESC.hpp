@@ -1,5 +1,6 @@
 #include <VescUart.h>
 #include <SoftwareSerial.h>
+#include "TimerInt.hpp"
 
 typedef struct {
     float avgMotorCurrent;
@@ -21,19 +22,21 @@ typedef struct {
 } dataPackageVESC_t ;
 
 typedef enum {
-  initial = 0,
-  braking,
-  recovering
+  INIT = 0,
+  BRAKING,
+  TRANS_B_TO_R,
+  RECOVERING,
+  TRANS_R_TO_B
 } state_t;
 
-static dataPackageVESC_t VESC_Values;
-static state_t STATE;
+extern dataPackageVESC_t VESC_Values;
+extern state_t STATE;
 
-void VESCInit(dataPackageVESC_t *ptrVESC_Values);
+void VESCInit(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE);
 
 void TaskGetValues(dataPackageVESC_t *ptrVESC_Values);
 
-void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE);
+void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE, timerRef_t *ptrTIMER);
 void VESC_setCurrent(float current);
 void VESC_setBrakeCurrent(float current);
 void VESC_setHandBrakeCurrent(float current);

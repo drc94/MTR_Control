@@ -1,4 +1,7 @@
-#include "VESC.h"
+#include "VESC.hpp"
+
+state_t STATE;
+dataPackageVESC_t VESC_Values;
 
 /** Initiate VescUart class */
 VescUart UART;
@@ -6,7 +9,7 @@ VescUart UART;
 /** Create software serial port using 2 digital extra outputs */
 SoftwareSerial vescSerial(2, 3); // Rx, Tx
 
-void VESCInit(dataPackageVESC_t *ptrVESC_Values){
+void VESCInit(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE){
   /** Define which ports to use as UART */
   UART.setSerialPort(&vescSerial);
   
@@ -29,6 +32,8 @@ void VESCInit(dataPackageVESC_t *ptrVESC_Values){
   ptrVESC_Values->error = 0; 
   ptrVESC_Values->pidPos = 0;
   ptrVESC_Values->id = 0; 
+
+  *ptrSTATE = INIT;
 }
 
 void TaskGetValues(dataPackageVESC_t *ptrVESC_Values){
@@ -68,5 +73,31 @@ void VESC_setHandBrakeCurrent(float current){
   UART.setHandBrakeCurrent(current);
 }
 
-void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE){
+void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE, timerRef_t *ptrTIMER){
+  if(*ptrSTATE == INIT){
+    VESC_setBrakeCurrent(5.0);
+    if(ptrVESC_Values->rpm<-100){
+      *ptrSTATE = BRAKING;
+    }
+  }
+  else if(*ptrSTATE == BRAKING){
+    VESC_setBrakeCurrent(5.0);
+    if(ptrVESC_Values->rpm>-500){
+      *ptrSTATE = TRANS_B_TO_R;
+      enableTimer();
+    }
+  }
+  else if(*ptrSTATE == TRANS_B_TO_R){
+    VESC_setCurrent(10.0);
+    if(*ptrTIMER == TIMER_FINISH){
+      *ptrSTATE = RECOVERING;
+      disableTimer();
+    }
+  }
+  else if(*ptrSTATE == RECOVERING){
+    VESC_setCurrent(10.0);
+    if((ptrVESC_Values->avgMotorCurrent>9.0) && (ptrVESC_Values->rpm<600)||(ptrVESC_Values->rpm<-200)){
+      *ptrSTATE = INIT;
+    }
+  }
 }

@@ -1,7 +1,8 @@
 #include "Display.h"
+#include <Arduino.h>
 
 void displayInit(){
-    // initialize serm  ial communication at 9600 bits per second:
+    // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
 
   while (!Serial) {
@@ -9,7 +10,7 @@ void displayInit(){
   }
 }
 
-void TaskPrint(dataPackageVESC_t *ptrVESC_Values)  // This is a task.
+void TaskPrint(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE)  // This is a task.
 {
   Serial.print(ptrVESC_Values->rpm);
   //Serial.print(", ");
@@ -19,11 +20,13 @@ void TaskPrint(dataPackageVESC_t *ptrVESC_Values)  // This is a task.
   //Serial.print(", ");
   //Serial.print(ptrVESC_Values->dutyCycleNow);
   Serial.print(", ");
-  Serial.println(ptrVESC_Values->tachometer);
+  Serial.print(ptrVESC_Values->tachometer);
   //Serial.print(", ");
   //Serial.print(ptrVESC_Values->inpVoltage);
   //Serial.print(", ");
   //Serial.print(ptrVESC_Values->ampHours);
   //Serial.print(", ");
   //Serial.println(ptrVESC_Values->ampHoursCharged);
+  Serial.print(", ");
+  Serial.println(*ptrSTATE);
 }

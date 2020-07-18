@@ -1,15 +1,20 @@
 #include "Display.h"
+#define DEBUG
 
 void setup() {
+  timerInit();
+  #ifdef DEBUG
   displayInit();
-
-  VESCInit(&VESC_Values);
+  #endif
+  VESCInit(&VESC_Values, &STATE);
 }
 
 void loop()
 {
-  TaskPrint(&VESC_Values);
+  #ifdef DEBUG
+  TaskPrint(&VESC_Values, &STATE);
+  #endif
   TaskGetValues(&VESC_Values);
-  TaskVESC_Control(&VESC_Values, &STATE);
-  delay(100);
+  TaskVESC_Control(&VESC_Values, &STATE, &TIMER_REF);
+  delay(50);
 }
