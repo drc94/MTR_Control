@@ -10,6 +10,6 @@ void loop()
 {
   TaskPrint(&VESC_Values);
   TaskGetValues(&VESC_Values);
-  VESC_setCurrent(2);
+  TaskVESC_Control(&VESC_Values, &STATE);
   delay(100);
 }

@@ -68,5 +68,5 @@ void VESC_setHandBrakeCurrent(float current){
   UART.setHandBrakeCurrent(current);
 }
 
-void VESC_control(){
+void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE){
 }
