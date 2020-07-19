@@ -88,15 +88,15 @@ void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE, time
     }
   }
   else if(*ptrSTATE == TRANS_B_TO_R){
-    VESC_setCurrent(10.0);
+    VESC_setCurrent(1.0);
     if(*ptrTIMER == TIMER_FINISH){
       *ptrSTATE = RECOVERING;
       disableTimer();
     }
   }
   else if(*ptrSTATE == RECOVERING){
-    VESC_setCurrent(10.0);
-    if((ptrVESC_Values->avgMotorCurrent>9.0) && (ptrVESC_Values->rpm<600)||(ptrVESC_Values->rpm<-200)){
+    VESC_setCurrent(8.0);
+    if((ptrVESC_Values->avgMotorCurrent>7.5) && (ptrVESC_Values->rpm<600)||(ptrVESC_Values->rpm<-200)){
       *ptrSTATE = INIT;
     }
   }
