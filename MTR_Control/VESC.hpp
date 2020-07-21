@@ -23,14 +23,17 @@ typedef struct {
 
 typedef enum {
   INIT = 0,
+  TRANS_I_TO_B,
   BRAKING,
   TRANS_B_TO_R,
   RECOVERING,
-  TRANS_R_TO_B
+  TRANS_R_TO_B,
+  HANDBRAKING
 } state_t;
 
 extern dataPackageVESC_t VESC_Values;
 extern state_t STATE;
+extern long dif_tachometer;
 
 void VESCInit(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE);
 

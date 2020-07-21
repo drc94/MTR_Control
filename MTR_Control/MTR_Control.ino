@@ -2,6 +2,7 @@
 #define DEBUG
 
 void setup() {
+  delay(5000);
   timerInit();
   #ifdef DEBUG
   displayInit();

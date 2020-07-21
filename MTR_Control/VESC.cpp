@@ -3,6 +3,10 @@
 state_t STATE;
 dataPackageVESC_t VESC_Values;
 
+long dif_tachometer;
+static long init_tachometer;
+
+
 /** Initiate VescUart class */
 VescUart UART;
 
@@ -33,6 +37,12 @@ void VESCInit(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE){
   ptrVESC_Values->pidPos = 0;
   ptrVESC_Values->id = 0; 
 
+  TaskGetValues(&VESC_Values);
+
+  init_tachometer = ptrVESC_Values->tachometer;
+
+  dif_tachometer = ptrVESC_Values->tachometer - init_tachometer;
+
   *ptrSTATE = INIT;
 }
 
@@ -54,6 +64,8 @@ void TaskGetValues(dataPackageVESC_t *ptrVESC_Values){
     ptrVESC_Values->error = UART.data.error;
     ptrVESC_Values->pidPos = UART.data.pidPos;
     ptrVESC_Values->id = UART.data.id;
+
+    dif_tachometer = ptrVESC_Values->tachometer - init_tachometer;
   }
   else
   {
@@ -75,29 +87,46 @@ void VESC_setHandBrakeCurrent(float current){
 
 void TaskVESC_Control(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE, timerRef_t *ptrTIMER){
   if(*ptrSTATE == INIT){
-    VESC_setBrakeCurrent(5.0);
-    if(ptrVESC_Values->rpm<-100){
+    VESC_setBrakeCurrent(20.0);
+    if(ptrVESC_Values->rpm<-200){
+      *ptrSTATE = TRANS_I_TO_B;
+      enableTimer();
+    }
+  }
+  else if(*ptrSTATE == TRANS_I_TO_B){
+    VESC_setBrakeCurrent(20.0);
+    if(*ptrTIMER == TIMER_FINISH){
       *ptrSTATE = BRAKING;
+      disableTimer();
     }
   }
   else if(*ptrSTATE == BRAKING){
-    VESC_setBrakeCurrent(5.0);
-    if(ptrVESC_Values->rpm>-500){
+    VESC_setBrakeCurrent(20.0);
+    if(ptrVESC_Values->rpm>-1000){
+      *ptrSTATE = TRANS_B_TO_R;
+      enableTimer();
+    }
+  }
+  else if(*ptrSTATE == HANDBRAKING){
+    VESC_setHandBrakeCurrent(5.0);
+    if(*ptrTIMER == TIMER_FINISH){
       *ptrSTATE = TRANS_B_TO_R;
       enableTimer();
     }
   }
   else if(*ptrSTATE == TRANS_B_TO_R){
-    VESC_setCurrent(1.0);
+    VESC_setCurrent(2.0);
     if(*ptrTIMER == TIMER_FINISH){
       *ptrSTATE = RECOVERING;
       disableTimer();
     }
   }
   else if(*ptrSTATE == RECOVERING){
-    VESC_setCurrent(8.0);
-    if((ptrVESC_Values->avgMotorCurrent>7.5) && (ptrVESC_Values->rpm<600)||(ptrVESC_Values->rpm<-200)){
+    VESC_setCurrent(4.0);
+//    if((ptrVESC_Values->avgMotorCurrent>4.9) && (ptrVESC_Values->rpm<500)||(ptrVESC_Values->rpm<-200)){
+    if(ptrVESC_Values->rpm<400){
       *ptrSTATE = INIT;
+      init_tachometer = ptrVESC_Values->tachometer;
     }
   }
 }

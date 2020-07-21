@@ -20,7 +20,7 @@ void TaskPrint(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE)  // This is
   //Serial.print(", ");
   //Serial.print(ptrVESC_Values->dutyCycleNow);
   Serial.print(", ");
-  Serial.print(ptrVESC_Values->tachometer);
+  Serial.print(dif_tachometer);
   //Serial.print(", ");
   //Serial.print(ptrVESC_Values->inpVoltage);
   //Serial.print(", ");
@@ -28,5 +28,13 @@ void TaskPrint(dataPackageVESC_t *ptrVESC_Values, state_t *ptrSTATE)  // This is
   //Serial.print(", ");
   //Serial.println(ptrVESC_Values->ampHoursCharged);
   Serial.print(", ");
-  Serial.println(*ptrSTATE);
+
+  if(*ptrSTATE == INIT) Serial.println("INIT");
+  else if(*ptrSTATE == TRANS_I_TO_B) Serial.println("TRANS_I_TO_B");
+  else if(*ptrSTATE == BRAKING) Serial.println("BRAKING");
+  else if(*ptrSTATE == TRANS_B_TO_R) Serial.println("TRANS_B_TO_R");
+  else if(*ptrSTATE == RECOVERING) Serial.println("RECOVERING");
+  else if(*ptrSTATE == TRANS_R_TO_B) Serial.println("TRANS_R_TO_B");
+  else if(*ptrSTATE == HANDBRAKING) Serial.println("HANDBRAKING");
+
 }
